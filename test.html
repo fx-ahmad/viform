@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./src/components/vi-welcome.js"></script>
+    <script src="./src/components/vi-text.js"></script>
+    <script src="./src/components/vi-input.js"></script>
+    <script src="./src/vi.js"></script>
+    <link rel="stylesheet" href="./src/css/home.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+    <title>vform</title>
+</head>
+<body>
+    <div id="app"></div>
+    <script>
+        var welcome = new ViWelcome({
+            name: "welcome",
+            title: "Jupyter",
+            subtitle: "Let us capture your vision and values so we can help you build a vibrant brand identity",
+            next_button_label: "Help build my brand"
+        });
+        var section_1 = new ViText({
+            name: "section-1",
+            title: "We’ll ask you about your business, your brand, your target market, this project and, finally, about you.",
+            subtitle: "Ready?",
+            next_button_label: "Let's do this"
+        });
+        var section_2 = new ViInput({
+            name: "section-2",
+            title:"Tell us about the main turning points in the history of your business",
+            placeholder:"Type your answer here",
+            next_button_label: "OK"
+        });
+        vi.render({
+            target: "#app",
+            backgrond: "../img/bg.svg",
+            components: [welcome, section_1, section_2]
+        })
+    </script>
+</body>
+</html>
