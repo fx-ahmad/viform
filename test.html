@@ -7,6 +7,7 @@
     <script src="./src/components/vi-welcome.js"></script>
     <script src="./src/components/vi-text.js"></script>
     <script src="./src/components/vi-input.js"></script>
+    <script src="./src/components/vi-radio.js"></script>
     <script src="./src/vi.js"></script>
     <link rel="stylesheet" href="./src/css/home.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,10 +36,20 @@
             placeholder:"Type your answer here",
             next_button_label: "OK"
         });
+        var section_3 = new ViRadio({
+            name: "section-3",
+            title: "What are you branding? This question is required. *",
+            options : [
+                {label: "Company", value:"company"},
+                {label: "Product", value:"product"},
+                {label: "Service", value:"service"}
+            ],
+            next_button_label: "OK"
+        })
         vi.render({
             target: "#app",
             backgrond: "../img/bg.svg",
-            components: [welcome, section_1, section_2]
+            components: [welcome, section_1, section_2, section_3]
         })
     </script>
 </body>

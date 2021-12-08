@@ -5527,3 +5527,25 @@ html, body {
 .overflow-hidden {
     overflow: hidden !important;
 }
+.radio-container label {
+    display: block;
+    margin-bottom: 1rem;
+    cursor: pointer;
+}
+.radio-container span {
+    display: block;
+    padding: 1rem;
+    width: 100%;
+    border: 1px solid #ccc;
+    margin-bottom: 1rem;
+    background-color: #fff
+}
+.radio-container span:hover {
+    background-color: #ccc;
+}
+.radio-container input:checked ~ span {
+    background-color: #ccc;
+}
+.radio-container input[type=radio] {
+    display: none;
+}
