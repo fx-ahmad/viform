@@ -26,5 +26,34 @@ var vi = {
         this.prepare_btn_next();
     },
     slides : [],
-    current_slide_index : 0
+    current_slide_index : 0,
+
+    /*  
+        vi.create("div", {class: "container"}, [
+            vi.create("h1", { class: "text-center" }, "Hello World!"),
+            vi.create("button", { class: "btn btn-outline-primary" }, "Submit")
+          ]
+        )   
+    */
+    create: function (tag_name, props, child) {
+        this.fragment = new DocumentFragment();
+        var el = document.createElement(tag_name);
+        var child;
+        for (var prop in props) {
+            el.setAttribute(prop, props[prop]);
+        }
+        if (typeof child == "string") {
+            el.textContent = child;
+        }
+        
+        if (child instanceof HTMLElement) {
+            el.appendChild(child)
+        }
+        if (Array.isArray(child)) {
+            for (var i = 0; i < child.length; i++) {
+                el.appendChild(child[i])
+            }
+        }
+        return el;
+    }
 }
