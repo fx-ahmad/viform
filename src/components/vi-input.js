@@ -1,16 +1,21 @@
 function ViInput (opts) {
     this.opts = opts;
-    var container = document.createElement("div");
-    container.id = opts.name;
-    container.classList.add("container");
-    container.innerHTML = "<div class='col-6 mx-auto'><h2>" + this.opts.title + "</h2> " + (this.opts.subtitle ? "<p>" + this.opts.subtitle + "</p></div>" : "");
-    var input_el = document.createElement("input");
-    input_el.placeholder = this.opts.placeholder;
-    container.firstElementChild.appendChild(input_el)    
-    var button_container = document.createElement("div");
-    button_container.classList.add("mt-3");
-    button_container.innerHTML = "<div class='col-6 mx-auto'><button type='button' id='next_slide'>" + this.opts.next_button_label +"</button></div>"
-    container.appendChild(button_container);
+    var container = 
+        vi.create("div", {id: this.opts.name, class: "container"}, 
+            [
+                vi.create("div", {class:"col-6 mx-auto"}, 
+                    [
+                        vi.create("h2", {}, this.opts.title),
+                        vi.create("p", {}, this.opts.subtitle),
+                        vi.create("input", {class: "d-block mt-3 p-2 w-100", placeholder: this.opts.placeholder})
+                    ]
+                ),
+                vi.create("div", {class: "col-6 mx-auto mt-3"}, 
+                    vi.create("button", {id:"next_slide", type:"button"}, "OK"
+                    )
+                )
+            ]
+        )
     container.setAttribute("hidden", "");
     return container;
 }

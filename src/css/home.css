@@ -5527,6 +5527,9 @@ html, body {
 .overflow-hidden {
     overflow: hidden !important;
 }
+.w-100 {
+    width: 100%;
+}
 .radio-container label {
     display: block;
     margin-bottom: 1rem;
