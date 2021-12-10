@@ -7,6 +7,9 @@ var vi = {
                     var current = vi.current_slide_index;
                     var next = vi.current_slide_index + 1;
                     vi.current_slide_index = next;
+                    if (!vi.slides[next]) {
+                        return;
+                    }
                     document.getElementById(vi.slides[next]).removeAttribute("hidden");
                     document.getElementById(vi.slides[current]).setAttribute("hidden", "");
                 })
