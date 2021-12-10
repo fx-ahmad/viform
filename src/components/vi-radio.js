@@ -1,33 +1,32 @@
 function ViRadio (opts) {
+    var self = this;
     this.opts = opts;
-    var container = document.createElement("div");
-    container.id = opts.name;
-    container.classList.add("container");
-    container.innerHTML = "<div class='col-6 mx-auto'><h2>" + this.opts.title + "</h2> " + (this.opts.subtitle ? "<p>" + this.opts.subtitle + "</p></div>" : "");
-
-    var radio_container = document.createElement("div");
-    radio_container.classList.add("radio-container");
     var radio_id = Math.floor(Math.random() * 1000);
-    for (var i = 0; i < this.opts.options.length; i++) {
-        var input_el = document.createElement("input");
-        var label = document.createElement("label");
-
-        input_el.setAttribute("type", "radio");
-        input_el.name = this.opts.name + "--" + radio_id;
-        input_el.value = this.opts.options[i].value
-        var span = document.createElement("span")
-        span.textContent = this.opts.options[i].label
-        label.appendChild(input_el);
-        label.appendChild(span)
-        radio_container.appendChild(label)
-    }
-
-    container.firstElementChild.appendChild(radio_container)    
-    
-    var button_container = document.createElement("div");
-    button_container.classList.add("mt-3");
-    button_container.innerHTML = "<div class='col-6 mx-auto'><button type='button' id='next_slide'>" + this.opts.next_button_label +"</button></div>"
-    container.appendChild(button_container);
+    var container = 
+        vi.create("div", {class: "container", id: this.opts.name}, 
+            [
+                vi.create("div", {class:"col-6 mx-auto"},
+                    [
+                        vi.create("h2", {}, this.opts.title),
+                        vi.create("p", {}, this.opts.subtitle)
+                    ]
+                ),
+                vi.create("div", {class:"radio-container col-6 mx-auto"},
+                    (this.opts.options.map(function(option){
+                        return (vi.create("label", {}, 
+                                    [
+                                        vi.create("input", {type:"radio", value: option.value, name: self.opts.name + "--" + radio_id}),
+                                        vi.create("span", {class:"radio-text"}, option.label)
+                                    ]
+                                ))
+                        })
+                    )
+                ),
+                vi.create("div", {class: "col-6 mx-auto"}, 
+                    vi.create("button", {type:"button", id:"next_slide"}, this.opts.next_button_label)
+                )
+            ]
+        );
     container.setAttribute("hidden", "");
     return container;
 }
