@@ -8,6 +8,7 @@
     <script src="./src/components/vi-text.js"></script>
     <script src="./src/components/vi-input.js"></script>
     <script src="./src/components/vi-radio.js"></script>
+    <script src="./src/components/vi-select.js"></script>
     <script src="./src/vi.js"></script>
     <link rel="stylesheet" href="./src/css/home.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -45,11 +46,25 @@
                 {label: "Service", value:"service"}
             ],
             next_button_label: "OK"
+        });
+        var section_4 = new ViSelect({
+            name: "section-4",
+            title: "What country do you live in?This question is required. *",
+            placeholder: "--Please choose an option--",
+            options:[
+                {label: "Afghanistan", value:"Afghanistan"},
+                {label: "Albania", value:"Albania"},
+                {label: "Algeria", value:"Algeria"},
+                {label: "Andorra", value:"Andorra"},
+                {label: "Angola", value:"Angola"},
+                {label: "Argentina", value:"Argentina"},
+            ],
+            next_button_label: "OK"
         })
         vi.render({
             target: "#app",
             backgrond: "../img/bg.svg",
-            components: [welcome, section_1, section_2, section_3]
+            components: [welcome, section_1, section_2, section_3, section_4]
         })
     </script>
 </body>
