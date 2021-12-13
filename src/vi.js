@@ -12,6 +12,7 @@ var vi = {
                     }
                     document.getElementById(vi.slides[next]).removeAttribute("hidden");
                     document.getElementById(vi.slides[current]).setAttribute("hidden", "");
+                    vi.set_section(next);
                 })
             })(btn_next_slide[i])
         }
@@ -27,6 +28,17 @@ var vi = {
         }
         target_el.removeAttribute("hidden")
         this.prepare_btn_next();
+        
+        var saved_section = vi.get_section()
+        if (saved_section) {
+            vi.current_slide_index = saved_section;
+            Array.from(document.querySelector(opts.target).children).forEach(function(section_el, i){
+                section_el.setAttribute("hidden", "");
+                if (i == saved_section) {
+                    section_el.removeAttribute("hidden");
+                }
+            })
+        }
     },
     slides : [],
     current_slide_index : 0,
@@ -58,5 +70,24 @@ var vi = {
             }
         }
         return el;
+    },
+    // set current section to storage. key : "vi-storage"
+    set_section: function (section_name) {
+        var storage = window.localStorage.getItem("vi-storage") || "{}";
+        var s = JSON.parse(storage);
+        s.section_id = section_name;
+        window.localStorage.setItem("vi-storage", JSON.stringify(s));
+    },
+    // get section from storage, return index section 
+    get_section: function () {
+        var storage =  window.localStorage.getItem("vi-storage");
+        if (!storage) {
+            return false;
+        }
+        var s =  JSON.parse(storage);
+        if (!s.section_id) {
+            return 0
+        }
+        return s.section_id;
     }
 }
