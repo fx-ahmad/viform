@@ -14,7 +14,8 @@ function ViCheckbox (opts = {}) {
                                         ]
                                     )
                                 )
-                    }))
+                    })),
+                vi.create("button", {class:"d-block mt-4"}, opts.next_button_label)
             ]
         );
         container.setAttribute("hidden", "");
