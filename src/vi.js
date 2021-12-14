@@ -1,4 +1,5 @@
 var vi = {
+    app_el : "",
     prepare_btn_next: function () {
         var btn_next_slide = document.querySelectorAll("#next_slide");
         for (var i = 0; i < btn_next_slide.length; i++) {
@@ -19,20 +20,18 @@ var vi = {
     },
     render : function (opts) {
         var opts = opts || {};
+        vi.app_el = document.querySelector(opts.target);
         this.slides = [];
-        var target_el = document.querySelector(opts.target);
-        //target_el.hidden = true;
         for (var i = 0; i < opts.components.length; i++) {
-            target_el.appendChild(opts.components[i])
+            vi.app_el.appendChild(opts.components[i])
             this.slides.push(opts.components[i].id);
         }
-        target_el.removeAttribute("hidden")
         this.prepare_btn_next();
         
         var saved_section = vi.get_section()
         if (saved_section) {
             vi.current_slide_index = saved_section;
-            Array.from(document.querySelector(opts.target).children).forEach(function(section_el, i){
+            Array.from(vi.app_el.children).forEach(function(section_el, i){
                 section_el.setAttribute("hidden", "");
                 if (i == saved_section) {
                     section_el.removeAttribute("hidden");
@@ -40,17 +39,15 @@ var vi = {
             });
         }
         // append prev - next button
-        for (var i = 0 ; i < this.slides.length; i++) {
-            var component_element = document.getElementById(this.slides[i]);
-            component_element.appendChild(
-                    vi.create("div", {id: "prev-next-container", class:"mt-5 d-flex justify-content-end"},
-                        [
-                            vi.create("button", {class:"btn-prev", onClick: vi.prev_button_click, disabled: (i == 0 ? true : false)}, "<"),
-                            vi.create("button", {class:"btn-next", onClick: vi.next_button_click, disabled: (i == vi.slides.length - 1 ? true : false )}, ">")
-                        ]
-                    )
+        vi.app_el.appendChild(
+            vi.create("div", {id: "prev-next-container", class:"container mt-5 d-flex  justify-content-end"},
+                [
+                    vi.create("button", {class:"btn-prev", onClick: vi.prev_button_click}, "<"),
+                    vi.create("button", {class:"btn-next", onClick: vi.next_button_click}, ">")
+                ]
             )
-        }
+        )
+        
     },
     slides : [],
     current_slide_index : 0,
@@ -59,6 +56,8 @@ var vi = {
     prev_button_click : function (e) {
         var current = vi.current_slide_index;
         var prev = vi.current_slide_index - 1;
+        if (!vi.slides[prev])
+            return;
         document.getElementById(vi.slides[current]).setAttribute("hidden", "");
         document.getElementById(vi.slides[prev]).removeAttribute("hidden");
         vi.current_slide_index = prev;
@@ -69,6 +68,8 @@ var vi = {
     next_button_click : function (e) {
         var current = vi.current_slide_index;
         var next = vi.current_slide_index + 1;
+        if (!vi.slides[next])
+            return;
         document.getElementById(vi.slides[next]).removeAttribute("hidden");
         document.getElementById(vi.slides[current]).setAttribute("hidden", "");
         vi.current_slide_index = next;

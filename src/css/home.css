@@ -5552,3 +5552,9 @@ html, body {
 .radio-container input[type=radio] {
     display: none;
 }
+
+#prev-next-container {
+    position: fixed;
+    bottom: 10%;
+    right: 10%
+}
