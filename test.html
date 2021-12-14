@@ -9,6 +9,7 @@
     <script src="./src/components/vi-input.js"></script>
     <script src="./src/components/vi-radio.js"></script>
     <script src="./src/components/vi-select.js"></script>
+    <script src="./src/components/vi-checkbox.js"></script>
     <script src="./src/vi.js"></script>
     <link rel="stylesheet" href="./src/css/home.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -60,11 +61,22 @@
                 {label: "Argentina", value:"Argentina"},
             ],
             next_button_label: "OK"
+        });
+        var section_5 = new ViCheckbox({
+            name: "section-5",
+            title: "Lorem ipsum dolor sit amet",
+            options: [
+                {label: "Vivamus", value: "Vivamus"},
+                {label: "Gravida", value: "gravida"},
+                {label: "Commodo", value: "commodo"},
+                {label: "Quisque", value: "quisque"},
+                {label: "Fermentum", value: "fermentum"},
+            ]
         })
         vi.render({
             target: "#app",
             backgrond: "../img/bg.svg",
-            components: [welcome, section_1, section_2, section_3, section_4]
+            components: [welcome, section_1, section_2, section_3, section_4, section_5]
         })
     </script>
 </body>
