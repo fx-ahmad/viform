@@ -37,11 +37,43 @@ var vi = {
                 if (i == saved_section) {
                     section_el.removeAttribute("hidden");
                 }
-            })
+            });
+        }
+        // append prev - next button
+        for (var i = 0 ; i < this.slides.length; i++) {
+            var component_element = document.getElementById(this.slides[i]);
+            component_element.appendChild(
+                    vi.create("div", {id: "prev-next-container", class:"mt-5 d-flex justify-content-end"},
+                        [
+                            vi.create("button", {class:"btn-prev", onClick: vi.prev_button_click, disabled: (i == 0 ? true : false)}, "<"),
+                            vi.create("button", {class:"btn-next", onClick: vi.next_button_click, disabled: (i == vi.slides.length - 1 ? true : false )}, ">")
+                        ]
+                    )
+            )
         }
     },
     slides : [],
     current_slide_index : 0,
+    // e : onclick event
+    // this : prev button element
+    prev_button_click : function (e) {
+        var current = vi.current_slide_index;
+        var prev = vi.current_slide_index - 1;
+        document.getElementById(vi.slides[current]).setAttribute("hidden", "");
+        document.getElementById(vi.slides[prev]).removeAttribute("hidden");
+        vi.current_slide_index = prev;
+        vi.set_section(vi.current_slide_index);
+    },
+    // e : onclick event
+    // this : prev button element
+    next_button_click : function (e) {
+        var current = vi.current_slide_index;
+        var next = vi.current_slide_index + 1;
+        document.getElementById(vi.slides[next]).removeAttribute("hidden");
+        document.getElementById(vi.slides[current]).setAttribute("hidden", "");
+        vi.current_slide_index = next;
+        vi.set_section(vi.current_slide_index);
+    },
 
     /*  
         vi.create("div", {class: "container"}, [
@@ -54,8 +86,22 @@ var vi = {
         this.fragment = new DocumentFragment();
         var el = document.createElement(tag_name);
         var child;
-        for (var prop in props) {
-            el.setAttribute(prop, props[prop]);
+        if (props) {
+            for (var prop in props) {
+                if (prop == "onClick" && typeof props[prop] == "function") {
+                    el.addEventListener("click", props[prop]);
+                    continue;
+                }
+                if (prop == "disabled") {
+                    if (props[prop]) {
+                        el.setAttribute("disabled", "");
+                    } else {
+                        el.removeAttribute("disabled");
+                    }
+                    continue;
+                }
+                el.setAttribute(prop, props[prop]);
+            }
         }
         if (typeof child == "string") {
             el.textContent = child;
