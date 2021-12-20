@@ -1,80 +1,80 @@
 var vi = {
-    app_el : "",
-    prepare_btn_next: function () {
+    container_el : "",
+    render : function (opts) {
+        var opts = opts || {};
+        vi.container_el = document.querySelector(opts.target);
+        vi.slides_ids = [];
+        for (var i = 0; i < opts.components.length; i++) {
+            vi.container_el.appendChild(opts.components[i]);
+            vi.slides_ids.push(opts.components[i].id);
+        }
+        // ok button will slide to next page
         var btn_next_slide = document.querySelectorAll("#next_slide");
         for (var i = 0; i < btn_next_slide.length; i++) {
-            (function(btn_el){
-                btn_el.addEventListener("click", function(){
+            (function (btn_el) {
+                btn_el.addEventListener("click", function () {
                     var current = vi.current_slide_index;
                     var next = vi.current_slide_index + 1;
                     vi.current_slide_index = next;
-                    if (!vi.slides[next]) {
+                    if (!vi.slides_ids[next]) {
                         return;
                     }
-                    document.getElementById(vi.slides[next]).removeAttribute("hidden");
-                    document.getElementById(vi.slides[current]).setAttribute("hidden", "");
+                    document.getElementById(vi.slides_ids[next]).removeAttribute("hidden");
+                    document.getElementById(vi.slides_ids[current]).setAttribute("hidden", "");
                     vi.set_section(next);
                 })
-            })(btn_next_slide[i])
+            })(btn_next_slide[i]);
         }
-    },
-    render : function (opts) {
-        var opts = opts || {};
-        vi.app_el = document.querySelector(opts.target);
-        this.slides = [];
-        for (var i = 0; i < opts.components.length; i++) {
-            vi.app_el.appendChild(opts.components[i])
-            this.slides.push(opts.components[i].id);
-        }
-        this.prepare_btn_next();
         
-        var saved_section = vi.get_section()
+        var saved_section = vi.get_section();
         if (saved_section) {
             vi.current_slide_index = saved_section;
-            Array.from(vi.app_el.children).forEach(function(section_el, i){
+            Array.from(vi.container_el.children).forEach(function (section_el, i) {
                 section_el.setAttribute("hidden", "");
                 if (i == saved_section) {
                     section_el.removeAttribute("hidden");
                 }
             });
         }
+         // e : onclick event
+        // this : prev button element
+        function prev_button_click (e) {
+            var current = vi.current_slide_index;
+            var prev = vi.current_slide_index - 1;
+            if (!vi.slides_ids[prev])
+                return;
+            document.getElementById(vi.slides_ids[current]).setAttribute("hidden", "");
+            document.getElementById(vi.slides_ids[prev]).removeAttribute("hidden");
+            vi.current_slide_index = prev;
+            vi.set_section(vi.current_slide_index);
+        }
+
+        // e : onclick event
+        // this : prev button element
+        function next_button_click (e) {
+            var current = vi.current_slide_index;
+            var next = vi.current_slide_index + 1;
+            if (!vi.slides_ids[next])
+                return;
+            document.getElementById(vi.slides_ids[next]).removeAttribute("hidden");
+            document.getElementById(vi.slides_ids[current]).setAttribute("hidden", "");
+            vi.current_slide_index = next;
+            vi.set_section(vi.current_slide_index);
+        }
+
         // append prev - next button
-        vi.app_el.appendChild(
+        vi.container_el.appendChild(
             vi.create("div", {id: "prev-next-container", class:"container mt-5 d-flex  justify-content-end"},
                 [
-                    vi.create("button", {class:"btn-prev", onClick: vi.prev_button_click}, "<"),
-                    vi.create("button", {class:"btn-next", onClick: vi.next_button_click}, ">")
+                    vi.create("button", {class:"btn-prev", onClick: prev_button_click}, "<"),
+                    vi.create("button", {class:"btn-next", onClick: next_button_click}, ">")
                 ]
             )
         )
         
     },
-    slides : [],
+    slides_ids : [],
     current_slide_index : 0,
-    // e : onclick event
-    // this : prev button element
-    prev_button_click : function (e) {
-        var current = vi.current_slide_index;
-        var prev = vi.current_slide_index - 1;
-        if (!vi.slides[prev])
-            return;
-        document.getElementById(vi.slides[current]).setAttribute("hidden", "");
-        document.getElementById(vi.slides[prev]).removeAttribute("hidden");
-        vi.current_slide_index = prev;
-        vi.set_section(vi.current_slide_index);
-    },
-    // e : onclick event
-    // this : prev button element
-    next_button_click : function (e) {
-        var current = vi.current_slide_index;
-        var next = vi.current_slide_index + 1;
-        if (!vi.slides[next])
-            return;
-        document.getElementById(vi.slides[next]).removeAttribute("hidden");
-        document.getElementById(vi.slides[current]).setAttribute("hidden", "");
-        vi.current_slide_index = next;
-        vi.set_section(vi.current_slide_index);
-    },
 
     /*  
         vi.create("div", {class: "container"}, [
@@ -84,7 +84,6 @@ var vi = {
         )   
     */
     create: function (tag_name, props, child) {
-        this.fragment = new DocumentFragment();
         var el = document.createElement(tag_name);
         var child;
         if (props) {
@@ -133,7 +132,7 @@ var vi = {
         }
         var s =  JSON.parse(storage);
         if (!s.section_id) {
-            return 0
+            return 0;
         }
         return s.section_id;
     }
